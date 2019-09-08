@@ -10,14 +10,14 @@ prefix = os.environ.get("prefix", "/usr")
 from distutils.core import setup, Extension
 import subprocess as S
 
-setup(name="pypolkit",
+setup(name="polkit",
       version="1.0.2",
       description="Python bindings for polkit-1",
       long_description="Python bindings for polkit-1",
       license="GNU GPL2",
       author="Bahadır Kandemir",
       author_email="bahadir@pardus.org.tr",
-      url="http://svn.pardus.org.tr/uludag/trunk/python-polkit/",
+      url="http://github.com/Pardus-Linux/python-polkit/",
       py_modules = ["polkit"],
       ext_modules = [Extension('_polkit',
                                sources=['pypolkit.c'],

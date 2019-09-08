@@ -1,3 +1,4 @@
  PolicyKit by David Zeuthen, <david@fubar.dk>
  Python Bindings by Bahadır Kandemir <bahadir@pardus.org.tr>
                     Harald Hoyer <harald@redhat.com>
+ Python3 support by Suleyman Poyraz <zaryob.dev@gmail.com> 

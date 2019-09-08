@@ -29,6 +29,14 @@
 #include <glib.h>
 #include <polkit/polkit.h>
 
+PyObject *_polkit_module;
+
+#if PY_MAJOR_VERSION >= 3
+    #define PyInt_FromLong PyLong_FromLong
+#endif
+#if PY_MAJOR_VERSION >= 3
+    #define PyString_FromString PyBytes_FromString
+#endif
 //! Standard exception for polkit
 static PyObject *PK_Error;
 
@@ -191,14 +199,37 @@ static PyMethodDef polkit_methods[] = {
     {NULL, NULL, 0, NULL}
 };
 
+#if PY_MAJOR_VERSION >= 3
+    static struct PyModuleDef moduledef = {
+        PyModuleDef_HEAD_INIT,
+        "_polkit",     /* m_name */
+        "module for querying system-wide policy",  /* m_doc */
+        -1,                  /* m_size */
+        polkit_methods,    /* m_methods */
+        NULL,                /* m_reload */
+        NULL,                /* m_traverse */
+        NULL,                /* m_clear */
+        NULL,                /* m_free */
+    };
+#endif
+
+
 #ifndef PyMODINIT_FUNC	/* declarations for DLL import/export */
 #define PyMODINIT_FUNC void
 #endif
 
 PyMODINIT_FUNC
+#if PY_MAJOR_VERSION >= 3
+PyInit__polkit(void)
+#else
 init_polkit(void)
+#endif
 {
+    #if PY_MAJOR_VERSION >= 3
+    PyObject *m = PyModule_Create(&moduledef);
+    #else
     PyObject *m = Py_InitModule3("_polkit", polkit_methods, "module for querying system-wide policy");
+    #endif
 
     if (m == NULL)
       return;
@@ -220,4 +251,8 @@ init_polkit(void)
     PK_Error = PyErr_NewException("polkit.error", NULL, NULL);
     Py_INCREF(PK_Error);
     PyModule_AddObject(m, "error", PK_Error);
+
+    _polkit_module = m;
+    return m;
+
 }

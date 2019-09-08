@@ -31,7 +31,11 @@ module for querying system-wide policy
 """
 
 import fnmatch
-import ConfigParser
+import sys
+if sys.version_info > (3,):
+    import configparser
+else:
+    import ConfigParser as configparser
 import os
 import pwd
 
@@ -101,7 +105,7 @@ def auth_list_all():
 
     authorizations = []
 
-    cp = ConfigParser.ConfigParser()
+    cp = configparser.ConfigParser()
     cp.optionxform = str
     cp.read(DB_FILE)
 
@@ -150,7 +154,7 @@ def auth_add(action_id, auth_type, uid, pid=None):
     """
     user = pwd.getpwuid(uid).pw_name
 
-    cp = ConfigParser.ConfigParser()
+    cp = configparser.ConfigParser()
     cp.optionxform = str
     cp.read(DB_FILE)
 
@@ -177,7 +181,7 @@ def auth_revoke_all(uid):
         User ID
     """
 
-    cp = ConfigParser.ConfigParser()
+    cp = configparser.ConfigParser()
     cp.optionxform = str
     cp.read(DB_FILE)
 
@@ -203,7 +207,7 @@ def auth_revoke(uid, action_id):
         Action ID
     """
 
-    cp = ConfigParser.ConfigParser()
+    cp = configparser.ConfigParser()
     cp.optionxform = str
     cp.read(DB_FILE)
 
@@ -232,7 +236,7 @@ def auth_block(uid, action_id):
     """
     user = pwd.getpwuid(uid).pw_name
 
-    cp = ConfigParser.ConfigParser()
+    cp = configparser.ConfigParser()
     cp.optionxform = str
     cp.read(DB_FILE)
 
